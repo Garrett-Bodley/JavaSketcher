@@ -35,5 +35,6 @@ function enableSketch(){
 
   canvas.addEventListener('mousedown', startDrawing)
   canvas.addEventListener('mouseup', stopDrawing)
+  canvas.addEventListener('mouseleave', stopDrawing)
   canvas.addEventListener('mousemove', draw)
 }
