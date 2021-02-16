@@ -1,3 +1,57 @@
-#sketchpad {
-  border: 3px solid black;
+#canvas {
+  border: 2px solid black;
+  
 }
+
+
+body {
+  text-align: center;
+}
+
+.sketchpad {
+  display: inline-block;
+}
+
+.toolbar {
+  display: inline-block;
+  height: 50px;
+  vertical-align: middle;
+}
+
+.toolbar .color-field {
+  height: 40 px;
+  width: 40 px;
+  min-height: 40px;
+  max-height: 40px;
+  cursor: pointer;
+  margin: 0px 5px
+}
+
+.toolbar .brush-size {
+  vertical-align: middle;
+  margin: 0px 5px
+}
+
+.toolbar .color-picker {
+  vertical-align: middle;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  border: 1px solid thistle;
+  display:inline-block;
+  min-height: 40px;
+  max-height: 40px;
+  cursor: pointer;
+  margin: 0px 5px
+}
+.toolbar .undo-button {
+  vertical-align: middle;
+  border: 1px solid thistle;
+  margin: 0px 5px
+}
+.toolbar .clear-button {
+  vertical-align: middle;
+  border: 1px solid thistle;
+  margin: 0px 5px
+}
+
