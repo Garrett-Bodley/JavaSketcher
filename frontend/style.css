@@ -29,7 +29,15 @@ body {
 
 .toolbar .brush-size {
   vertical-align: middle;
+  width: 100 px;
   margin: 0px 5px
+}
+
+.toolbar .brush-size-display {
+  vertical-align: middle;
+  width: 75px;
+  margin: 0px 5px;
+  text-align: right
 }
 
 .toolbar .color-picker {
@@ -44,12 +52,8 @@ body {
   cursor: pointer;
   margin: 0px 5px
 }
-.toolbar .undo-button {
-  vertical-align: middle;
-  border: 1px solid thistle;
-  margin: 0px 5px
-}
-.toolbar .clear-button {
+
+.toolbar .button {
   vertical-align: middle;
   border: 1px solid thistle;
   margin: 0px 5px
