@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () =>{
-  console.log('hello!')
+  console.log('hello!');
   enableSketch();
 })
 
@@ -13,8 +13,9 @@ function enableSketch(){
   ctx.fillRect(0, 0, canvas.width, canvas.height)
   let drawing = false;
 
-  function startDrawing(){
+  function startDrawing(e){
     drawing = true;
+    draw(e);
   }
 
   function stopDrawing(){
@@ -27,7 +28,7 @@ function enableSketch(){
     ctx.lineWidth = 10;
     ctx.lineCap = 'round';
 
-    ctx.lineTo((e.clientX - canvas.offsetLeft), (e.clientY - canvas.offsetTop));
+    ctx.lineTo(e.clientX - canvas.offsetLeft, (e.clientY - canvas.offsetTop));
     ctx.stroke();
     ctx.beginPath();
     ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop)
@@ -38,3 +39,4 @@ function enableSketch(){
   canvas.addEventListener('mouseleave', stopDrawing)
   canvas.addEventListener('mousemove', draw)
 }
+
