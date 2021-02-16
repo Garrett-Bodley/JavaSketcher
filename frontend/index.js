@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () =>{
   console.log('hello!');
-  enableSketch();
+  new Sketchpad(document.getElementById('sketchpad'))
 })
 
 function enableSketch(){
