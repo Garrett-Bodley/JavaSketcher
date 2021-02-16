@@ -1,14 +1,20 @@
-class Sketch {
+class Sketchpad {
   static all = []
 
   constructor(element){
-    this._drawing = false;
-    this.canvas = element;
+    this.drawing = false;
+    this.parent = element;
+    this.canvas = this.createAndRenderCanvas()
     this.ctx = this.canvas.getContext("2d");
-    this.resize();
-    this._backgroundColor = 'rgb(235, 213, 179)';
+    this.setSize()
+    this.backgroundColor = 'rgb(235, 213, 179)'
+    this.ctx.fillStyle = this.backgroundColor;
+    this.ctx.fillRect(0, 0, this.width, this.height)
+    this.createToolbar();
     this.addListeners();
-
+    this.lineWidth = 10;
+    this.drawColor = 'black'
+    this.stateLog = []
     Sketchpad.all.push(this)
   }
 
@@ -39,41 +45,161 @@ class Sketch {
   }
 
   startDrawing = (e) => {
-    console.log('drawing')
-    this._drawing = true;
-    debugger
+    this.drawing = true;
     this.draw(e);
   }
 
   stopDrawing = () => {
-    console.log('stopped drawing')
-    this._drawing = false;
+    this.drawing = false;
     this.ctx.beginPath();
+    this.saveState()
+  }
+
+  clearCanvas = () => {
+    this.ctx.fillStyle = this.backgroundColor;
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
+    this.saveState()
+  }
+
+  saveState = () => {
+    this.stateLog.push(this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height))
+  }
+
+  undoLast = () => {
+    if(this.stateLog.length > 1){
+      this.stateLog.pop();
+      this.ctx.putImageData(this.stateLog[this.stateLog.length - 1], 0, 0)
+    }else{
+      this.stateLog.pop();
+      this.clearCanvas()
+    }
   }
 
 
-  resize = () => {
-    this.height = this.canvas.parentElement.clientHeight;
-    this.width = this.canvas.parentElement.clientWidth;
+  setSize = () => {
+    this.canvas.width  = 600;
+    this.canvas.height = 400;
+    this.ctx.fillStyle = 'rgb(235, 213, 179)';
+    this.ctx.fillRect(0, 0, this.width, this.height);
   }
 
   draw = (e) => {
     if(!this.drawing) return
-    this.ctx.lineWidth = 10;
+    this.ctx.lineWidth = this.lineWidth;
     this.ctx.lineCap = 'round';
-    console.log(`Drawing here X: ${e.clientX - this.canvas.offsetLeft}, Y: ${e.clientY - this.canvas.offsetTop}`)
+    this.ctx.strokeStyle = this.drawColor
 
-    this.ctx.lineTo(e.clientX - this.canvas.offsetLeft, e.clientY - this.canvas.offsetTop);
+    this.ctx.lineTo(e.clientX - this.canvas.offsetLeft, e.clientY - this.canvas.parentElement.offsetTop);
     this.ctx.stroke();
     this.ctx.beginPath();
-    this.ctx.moveTo(e.clientX - this.canvas.offsetLeft, e.clientY - this.canvas.offsetTop)
+    this.ctx.moveTo(e.clientX - this.canvas.offsetLeft, e.clientY - this.canvas.parentElement.offsetTop)
   }
 
   addListeners(){
     this.canvas.addEventListener('mousedown', this.startDrawing)
     this.canvas.addEventListener('mouseup', this.stopDrawing)
-    this.canvas.addEventListener('mouseleave', this.stopDrawing)
+    this.canvas.addEventListener('mouseleave', () => {
+      if(this.drawing === true) this.stopDrawing()
+    })
     this.canvas.addEventListener('mousemove', this.draw)
+  }
+
+  createToolbar = () => {
+    const toolbar = document.createElement('div')
+    toolbar.classList.add('toolbar');
+
+    let colorSelectors = this.createColorSelectors([`black`, `red`, `orange`, `green`, `blue`, `indigo`, `violet`])
+    for(const color of colorSelectors){
+      toolbar.appendChild(color);
+    }
+
+    let buttons = this.createButtons();
+    for(const button of buttons){
+      toolbar.append(button);
+    }
+
+    this.parent.appendChild(document.createElement('br'))
+    this.parent.appendChild(toolbar);
+
+  }
+
+  createButtons = () => {
+    const buttons = [];
+
+    
+    let colorPicker = document.createElement('span');
+    colorPicker.classList.add('color-picker')
+    colorPicker.style.backgroundColor = 'white'
+    
+    let picker = document.createElement('input')
+    picker.style.opacity = 0
+    picker.type = 'color';
+    
+    colorPicker.appendChild(picker)
+    
+    colorPicker.addEventListener('click', () => {
+      picker.click();
+    })
+    
+    picker.addEventListener('input', (e) =>{
+      this.drawColor = e.target.value;
+      e.target.parentElement.style.backgroundColor = e.target.value
+    })
+    buttons.push(colorPicker)
+
+    let brushSize = document.createElement('input');
+    brushSize.classList.add('brush-size');
+    brushSize.type = 'range'
+    brushSize.min = 1;
+    brushSize.max = 20;
+    brushSize.defaultValue = 10;
+    brushSize.addEventListener('input', this.setBrushSize)
+    buttons.push(brushSize);
+    
+    let undo = document.createElement('button');
+    undo.innerText = `Undo`;
+    undo.classList.add('undo-button', 'button', 'is-rounded', 'is-light')
+    undo.addEventListener('click', this.undoLast)
+    buttons.push(undo)
+
+    let clear = document.createElement('button');
+    clear.innerText = `Clear`
+    clear.classList.add('clear-button', 'button', 'is-rounded', 'is-light')
+    clear.addEventListener('click', this.clearCanvas)
+    buttons.push(clear)
+
+    return buttons;
+  }
+
+  createColorSelectors = (array) => {
+    let selectors = [];
+    for(const el of array){
+      let color = document.createElement('button');
+      color.id = el;
+      color.classList.add('toolbar', 'color-field', 'button', 'is-rounded');
+      color.style.backgroundColor = el;
+      selectors.push(color);
+      color.addEventListener('click', this.setBrushColor)
+    }
+    return selectors
+  }
+
+  setBrushColor = (e) => {
+    this.drawColor = e.target.id
+  }
+
+  setBrushSize = (e) => {
+    this.lineWidth = e.target.value
+  }
+
+  // check out position absolute, position fixed
+
+  createAndRenderCanvas = () => {
+    let canvas = document.createElement('canvas');
+    canvas.id = "canvas"
+    this.parent.appendChild(canvas);
+    return canvas
   }
 
 }
