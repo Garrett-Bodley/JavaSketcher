@@ -10,10 +10,10 @@ class Sketchpad {
     this.backgroundColor = 'rgb(235, 213, 179)'
     this.ctx.fillStyle = this.backgroundColor;
     this.ctx.fillRect(0, 0, this.width, this.height)
-    this.createToolbar();
-    this.addListeners();
     this.lineWidth = 10;
     this.drawColor = 'black'
+    this.createToolbar();
+    this.addListeners();
     this.stateLog = []
     Sketchpad.all.push(this)
   }
@@ -55,7 +55,8 @@ class Sketchpad {
     this.saveState()
   }
 
-  clearCanvas = () => {
+  clearCanvas = (e) => {
+    e.preventDefault();
     this.ctx.fillStyle = this.backgroundColor;
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
@@ -66,7 +67,8 @@ class Sketchpad {
     this.stateLog.push(this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height))
   }
 
-  undoLast = () => {
+  undoLast = (e) => {
+    e.preventDefault();
     if(this.stateLog.length > 1){
       this.stateLog.pop();
       this.ctx.putImageData(this.stateLog[this.stateLog.length - 1], 0, 0)
@@ -78,8 +80,8 @@ class Sketchpad {
 
 
   setSize = () => {
-    this.canvas.width  = 600;
-    this.canvas.height = 400;
+    this.canvas.width  = 900;
+    this.canvas.height = 600;
     this.ctx.fillStyle = 'rgb(235, 213, 179)';
     this.ctx.fillRect(0, 0, this.width, this.height);
   }
@@ -114,7 +116,7 @@ class Sketchpad {
       toolbar.appendChild(color);
     }
 
-    let buttons = this.createButtons();
+    let buttons = this.createToolbarButtons();
     for(const button of buttons){
       toolbar.append(button);
     }
@@ -124,7 +126,7 @@ class Sketchpad {
 
   }
 
-  createButtons = () => {
+  createToolbarButtons = () => {
     const buttons = [];
 
     
@@ -152,10 +154,17 @@ class Sketchpad {
     brushSize.classList.add('brush-size');
     brushSize.type = 'range'
     brushSize.min = 1;
-    brushSize.max = 20;
+    brushSize.max = 100;
     brushSize.defaultValue = 10;
     brushSize.addEventListener('input', this.setBrushSize)
     buttons.push(brushSize);
+
+    let brushSizeDisplay = document.createElement('input');
+    brushSizeDisplay.type = 'number';
+    brushSizeDisplay.classList.add('brush-size-display', 'input', 'is-rounded', 'is-small');
+    brushSizeDisplay.defaultValue = 10;
+    brushSizeDisplay.addEventListener('input', this.setBrushSize)
+    buttons.push(brushSizeDisplay);
     
     let undo = document.createElement('button');
     undo.innerText = `Undo`;
@@ -168,6 +177,16 @@ class Sketchpad {
     clear.classList.add('clear-button', 'button', 'is-rounded', 'is-light')
     clear.addEventListener('click', this.clearCanvas)
     buttons.push(clear)
+
+    let save = document.createElement('button');
+    save.innerText = 'Save';
+    save.classList.add('save-button', 'button', 'is-rounded', 'is-light')
+    buttons.push(save)
+
+    let download = document.createElement('button');
+    download.innerText = 'Download';
+    download.classList.add('download-button', 'button', 'is-rounded', 'is-light')
+    buttons.push(download)
 
     return buttons;
   }
@@ -191,6 +210,8 @@ class Sketchpad {
 
   setBrushSize = (e) => {
     this.lineWidth = e.target.value
+    document.querySelector('input.brush-size').value = e.target.value;
+    document.querySelector('input.brush-size-display').value = e.target.value
   }
 
   // check out position absolute, position fixed
