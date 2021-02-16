@@ -3,11 +3,30 @@
   <head>
     <meta charset="utf-8" />
     <title>Java Sketcher</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div>
-      <canvas id="sketchpad"></canvas>
+    <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand is-transparent">
+        <p class="title">JavaSketcher</p>
+      </div>
+      <div class="navbar-menu">
+        <div class="navbar-start">
+        </div>
+        <div class="navbar-end">
+
+        </div>
+      </div>
+    </nav>
+    <div class="block"></div>
+    <div class="columns is-mobile is-centered">
+      <div class="column is-half">
+        <img>
+      </div>
+      <div class="column is-half">
+        <canvas id="sketchpad"></canvas>
+      </div>
     </div>
   
     <script type="text/javascript" src="index.js"></script>
