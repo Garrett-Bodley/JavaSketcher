@@ -43,20 +43,31 @@ class Sketchpad {
   get backgroundColor(){
     return this._backgroundColor;
   }
-
+  
   startDrawing = (e) => {
     this.drawing = true;
     this.draw(e);
   }
-
+  
   stopDrawing = () => {
     this.drawing = false;
     this.ctx.beginPath();
     this.saveState()
   }
+  
+  draw = (e) => {
+    if(!this.drawing) return
+    this.ctx.lineWidth = this.lineWidth;
+    this.ctx.lineCap = 'round';
+    this.ctx.strokeStyle = this.drawColor
 
-  clearCanvas = (e) => {
-    e.preventDefault();
+    this.ctx.lineTo(e.offsetX, e.offsetY);
+    this.ctx.stroke();
+    this.ctx.beginPath();
+    this.ctx.moveTo(e.offsetX, e.offsetY)
+  }
+
+  clearCanvas = () => {
     this.ctx.fillStyle = this.backgroundColor;
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
@@ -67,8 +78,7 @@ class Sketchpad {
     this.stateLog.push(this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height))
   }
 
-  undoLast = (e) => {
-    e.preventDefault();
+  undoLast = () => {
     if(this.stateLog.length > 1){
       this.stateLog.pop();
       this.ctx.putImageData(this.stateLog[this.stateLog.length - 1], 0, 0)
@@ -78,7 +88,6 @@ class Sketchpad {
     }
   }
 
-
   setSize = () => {
     this.canvas.width  = 900;
     this.canvas.height = 600;
@@ -86,17 +95,6 @@ class Sketchpad {
     this.ctx.fillRect(0, 0, this.width, this.height);
   }
 
-  draw = (e) => {
-    if(!this.drawing) return
-    this.ctx.lineWidth = this.lineWidth;
-    this.ctx.lineCap = 'round';
-    this.ctx.strokeStyle = this.drawColor
-
-    this.ctx.lineTo(e.clientX - this.canvas.offsetLeft, e.clientY - this.canvas.parentElement.offsetTop);
-    this.ctx.stroke();
-    this.ctx.beginPath();
-    this.ctx.moveTo(e.clientX - this.canvas.offsetLeft, e.clientY - this.canvas.parentElement.offsetTop)
-  }
 
   addListeners(){
     this.canvas.addEventListener('mousedown', this.startDrawing)
@@ -181,11 +179,14 @@ class Sketchpad {
     let save = document.createElement('button');
     save.innerText = 'Save';
     save.classList.add('save-button', 'button', 'is-rounded', 'is-light')
+    save.addEventListener('click', this.sendToServer)
+
     buttons.push(save)
 
-    let download = document.createElement('button');
+    let download = document.createElement('a');
     download.innerText = 'Download';
     download.classList.add('download-button', 'button', 'is-rounded', 'is-light')
+    download.addEventListener('click', this.downloadSketch)
     buttons.push(download)
 
     return buttons;
@@ -221,6 +222,42 @@ class Sketchpad {
     canvas.id = "canvas"
     this.parent.appendChild(canvas);
     return canvas
+  }
+
+  downloadSketch = (e) => {
+    const button = e.target
+    const dataUrl = this.canvas.toDataURL('image/jpeg')
+    button.href = dataUrl;
+    button.download = 'sketch.jpeg'
+  }
+
+  sendToServer = () => {
+    let dataURL = this.canvas.toDataURL('image/jpeg');
+    let imageBlob = this.dataURLtoBinary(dataURL)
+    let formData = new FormData()
+    formData.append('sketch', imageBlob)
+
+    let configObj = {
+      method: "POST",
+      headers: {
+        "Accept": "application/json"
+      },
+      body: formData
+    }
+
+    
+  }
+
+  dataURLtoBinary = (dataURL) => {
+
+    let binary = atob(dataURL.split(',')[1]);
+
+    let array = [];
+    for(let i = 0; i < binary.length; i++) {
+        array.push(binary.charCodeAt(i));
+    }
+
+    return new Blob([new Uint8Array(array)], {type: 'image/jpeg'});
   }
 
 }
