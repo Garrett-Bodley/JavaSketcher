@@ -6,13 +6,12 @@ class Sketchpad {
     this.parent = element;
     this.canvas = this.createAndRenderCanvas()
     this.ctx = this.canvas.getContext("2d");
-    this.setSize()
     this.backgroundColor = 'rgb(235, 213, 179)'
-    this.ctx.fillStyle = this.backgroundColor;
-    this.ctx.fillRect(0, 0, this.width, this.height)
     this.lineWidth = 10;
     this.drawColor = 'black'
     this.createToolbar();
+    this.setSize()
+    this.dynamicallyResize()
     this.addListeners();
     this.stateLog = []
     Sketchpad.all.push(this)
@@ -60,7 +59,6 @@ class Sketchpad {
     this.ctx.lineWidth = this.lineWidth;
     this.ctx.lineCap = 'round';
     this.ctx.strokeStyle = this.drawColor
-
     this.ctx.lineTo(e.offsetX, e.offsetY);
     this.ctx.stroke();
     this.ctx.beginPath();
@@ -89,10 +87,28 @@ class Sketchpad {
   }
 
   setSize = () => {
-    this.canvas.width  = 900;
-    this.canvas.height = 600;
-    this.ctx.fillStyle = 'rgb(235, 213, 179)';
+    let toolbar = document.querySelector('div.toolbar')
+    let navbar = document.querySelector('nav.navbar')
+
+    this.width  = window.innerWidth * .9;
+    this.height = window.innerHeight * .9 - (toolbar.offsetHeight + navbar.offsetHeight);
+    this.ctx.fillStyle = this.backgroundColor;
     this.ctx.fillRect(0, 0, this.width, this.height);
+  }
+
+  resize = () => {
+    let toolbar = document.querySelector('div.toolbar')
+    let navbar = document.querySelector('nav.navbar')
+
+    this.width  = window.innerWidth * .9;
+    this.height = window.innerHeight * .9 - (toolbar.offsetHeight + navbar.offsetHeight)
+    this.ctx.fillStyle = this.backgroundColor;
+    this.ctx.fillRect(0, 0, this.width, this.height);
+    this.ctx.putImageData(this.stateLog[this.stateLog.length - 1], 0, 0)
+  }
+
+  dynamicallyResize = () => {
+    window.addEventListener('resize', this.resize, false)
   }
 
 
@@ -245,7 +261,7 @@ class Sketchpad {
       body: formData
     }
 
-    
+    fetch('http://localhost:3000/sketches', configObj).then(resp => resp.json()).then(json => console.log(json))
   }
 
   dataURLtoBinary = (dataURL) => {
