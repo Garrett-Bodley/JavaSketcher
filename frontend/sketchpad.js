@@ -149,10 +149,11 @@ class Sketchpad {
 
     
     let colorPicker = document.createElement('span');
-    colorPicker.classList.add('color-picker')
+    colorPicker.classList.add('color-picker', 'tools')
     colorPicker.style.backgroundColor = 'white'
     
     let picker = document.createElement('input')
+    picker.classList.add('tools')
     picker.style.opacity = 0
     picker.type = 'color';
     
@@ -169,7 +170,7 @@ class Sketchpad {
     buttons.push(colorPicker)
 
     let brushSize = document.createElement('input');
-    brushSize.classList.add('brush-size');
+    brushSize.classList.add('brush-size', 'tools');
     brushSize.type = 'range'
     brushSize.min = 1;
     brushSize.max = 100;
@@ -179,33 +180,33 @@ class Sketchpad {
 
     let brushSizeDisplay = document.createElement('input');
     brushSizeDisplay.type = 'number';
-    brushSizeDisplay.classList.add('brush-size-display', 'input', 'is-rounded', 'is-small');
+    brushSizeDisplay.classList.add('brush-size-display', 'input', 'is-rounded', 'is-small', 'tools');
     brushSizeDisplay.defaultValue = 10;
     brushSizeDisplay.addEventListener('input', this.setBrushSize)
     buttons.push(brushSizeDisplay);
     
     let undo = document.createElement('button');
     undo.innerText = `Undo`;
-    undo.classList.add('undo-button', 'button', 'is-rounded', 'is-light')
+    undo.classList.add('undo-button', 'button', 'is-rounded', 'is-light', 'tools')
     undo.addEventListener('click', this.undoLast)
     buttons.push(undo)
 
     let clear = document.createElement('button');
     clear.innerText = `Clear`
-    clear.classList.add('clear-button', 'button', 'is-rounded', 'is-light')
+    clear.classList.add('clear-button', 'button', 'is-rounded', 'is-light', 'tools')
     clear.addEventListener('click', this.clearCanvas)
     buttons.push(clear)
 
     let save = document.createElement('button');
     save.innerText = 'Save';
-    save.classList.add('save-button', 'button', 'is-rounded', 'is-light')
+    save.classList.add('save-button', 'button', 'is-rounded', 'is-light', 'tools')
     save.addEventListener('click', this.sendToServer)
 
     buttons.push(save)
 
     let download = document.createElement('a');
     download.innerText = 'Download';
-    download.classList.add('download-button', 'button', 'is-rounded', 'is-light')
+    download.classList.add('download-button', 'button', 'is-rounded', 'is-light', 'tools')
     download.addEventListener('click', this.downloadSketch)
     buttons.push(download)
 
@@ -217,7 +218,7 @@ class Sketchpad {
     for(const el of array){
       let color = document.createElement('button');
       color.id = el;
-      color.classList.add('toolbar', 'color-field', 'button', 'is-rounded');
+      color.classList.add('tools', 'color-field', 'button', 'is-rounded');
       color.style.backgroundColor = el;
       selectors.push(color);
       color.addEventListener('click', this.setBrushColor)

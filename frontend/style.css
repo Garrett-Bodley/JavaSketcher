@@ -1,22 +1,35 @@
-#canvas {
+canvas {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
   border: 2px solid black;
-  
 }
 
-
-body {
+div.toolbar{
   text-align: center;
 }
 
-.sketchpad {
-  display: inline-block;
+.tools{
+  margin:auto
 }
 
-.toolbar {
+
+/* body {
+} */
+
+#show{
+  display:block;
+}
+
+#sketchpad {
+  justify-content: center;
+}
+
+/* .toolbar {
   display: inline-block;
   height: 50px;
   vertical-align: middle;
-}
+} */
 
 .toolbar .color-field {
   height: 40 px;
@@ -24,19 +37,19 @@ body {
   min-height: 40px;
   max-height: 40px;
   cursor: pointer;
-  margin: 0px 5px
+  margin: 5px 5px
 }
 
 .toolbar .brush-size {
   vertical-align: middle;
   width: 100 px;
-  margin: 0px 5px
+  margin: 5px 5px
 }
 
 .toolbar .brush-size-display {
   vertical-align: middle;
   width: 75px;
-  margin: 0px 5px;
+  margin: 5px 5px;
   text-align: right
 }
 
@@ -50,12 +63,12 @@ body {
   min-height: 40px;
   max-height: 40px;
   cursor: pointer;
-  margin: 0px 5px
+  margin: 5px 5px
 }
 
 .toolbar .button {
   vertical-align: middle;
   border: 1px solid thistle;
-  margin: 0px 5px
+  margin: 5px 5px
 }
 
