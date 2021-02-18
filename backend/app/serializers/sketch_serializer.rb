@@ -4,6 +4,6 @@ class SketchSerializer < ActiveModel::Serializer
   attributes :id, :rating, :image
 
   def image
-    rails_blob_path(object.image, only_path: true) if object.image.attached?
+    polymorphic_url(object.image) if object.image.attached?
   end
 end
