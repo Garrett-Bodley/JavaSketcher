@@ -20,4 +20,25 @@ class Index {
     }
 
   }
+
+  createMediaObject = () => {
+    let article = document.createElement('article')
+    article.classList.add('media');
+  
+    let mediaLeft = document.createElement('figure')
+    mediaLeft.classList.add('media-left')
+  
+    let mediaContent = document.createElement('div')
+    mediaContent.classList.add('media-content')
+  
+    let mediaRight = document.createElement('div')
+    mediaRight.classList.add('media-right')
+  
+    article.appendChild(mediaLeft)
+    article
+    .appendChild(mediaContent)
+    article.appendChild(mediaRight)
+  
+    return article;
+  }
 }
