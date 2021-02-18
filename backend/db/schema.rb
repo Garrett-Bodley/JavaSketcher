@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 2021_02_17_021958) do
   end
 
   create_table "sketches", force: :cascade do |t|
-    t.integer "rating"
+    t.integer "rating", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
