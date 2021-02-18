@@ -3,6 +3,7 @@ class Sketchpad {
 
   constructor(element){
     this.drawing = false;
+    this.hidden = false;
     this.parent = element;
     this.canvas = this.createAndRenderCanvas()
     this.ctx = this.canvas.getContext("2d");
@@ -97,6 +98,7 @@ class Sketchpad {
   }
 
   resize = () => {
+    if(this.hidden) return
     let toolbar = document.querySelector('div.toolbar')
     let navbar = document.querySelector('nav.navbar')
 
@@ -104,7 +106,9 @@ class Sketchpad {
     this.height = window.innerHeight * .9 - (toolbar.offsetHeight + navbar.offsetHeight)
     this.ctx.fillStyle = this.backgroundColor;
     this.ctx.fillRect(0, 0, this.width, this.height);
-    this.ctx.putImageData(this.stateLog[this.stateLog.length - 1], 0, 0)
+    if(this.stateLog.length > 0){
+      this.ctx.putImageData(this.stateLog[this.stateLog.length - 1], 0, 0)
+    }
   }
 
   dynamicallyResize = () => {
@@ -274,6 +278,18 @@ class Sketchpad {
     }
 
     return new Blob([new Uint8Array(array)], {type: 'image/jpeg'});
+  }
+
+  hide = () => {
+    this.parent.remove();
+    this.hidden = true;
+  }
+
+  show = () => {
+    if(!this.hidden) return
+    document.body.appendChild(this.parent);
+    this.hidden = false;
+    this.resize();
   }
 
 }
