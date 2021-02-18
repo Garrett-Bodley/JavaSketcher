@@ -3,6 +3,7 @@ class Sketch {
   static showDiv = document.getElementById('show')
   static index = document.getElementById('index')
   static hidden = false;
+  static loaded = false;
 
   constructor(obj){
     this.id = obj.id;
@@ -13,8 +14,13 @@ class Sketch {
   }
 
   static loadIndex = () => {
-    Sketch.hide()
-    fetch('http:localhost:3000/sketches').then(resp => resp.json()).then(json => Sketch.renderIndex(json))
+    if (Sketch.loaded) {
+      Sketch.showIndex();
+      Sketch.hide();
+    }else{
+      fetch('http:localhost:3000/sketches').then(resp => resp.json()).then(json => Sketch.renderIndex(json));
+      Sketch.loaded = true;
+    }
   }
 
   static renderIndex = (array) => {
@@ -29,6 +35,10 @@ class Sketch {
 
   static hideIndex = () => {
     Sketch.index.remove()
+  }
+
+  static showIndex = () => {
+    document.body.appendChild(Sketch.index)
   }
 
   createCard = () => {
