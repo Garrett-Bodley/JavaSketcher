@@ -68,7 +68,11 @@ class Sketch {
   display = () => {
     Sketch.hideIndex()
     Sketch.show()
-    Sketch.showDiv.querySelector('img').src = this.image;
+    let img = Sketch.showDiv.querySelector('img');
+    img.src = this.image;
+    img.id = `sketch-${this.id}`;
+    let comment = new Comment({sketchId: this.id})
+    Sketch.showDiv.appendChild(comment.form);
   }
 
 
