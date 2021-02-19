@@ -15,33 +15,14 @@
         <div class="navbar-start">
         </div>
         <div class="navbar-end">
-          <p class="navbar-item">All Sketches</p>
+          <p class="navbar-item" id="draw">Draw</p>
+          <p class="navbar-item" id="all-sketches">All Sketches</p>
         </div>
       </div>
     </nav>
     <nav class="toolbar level is-transparent"></nav>
     <div class="container is-fluid" id="show">
       <div class="level"><img class="level-item" id="show-sketch-image"></div>
-      <div class="box">
-        <article class="media">
-          <div class="media-content">
-            <form>
-              <div class="field">
-                <label class="label">Name</label>
-                <div class="control">
-                  <input class="input" type="text" id="name">
-                </div>
-              </div>
-              <div class="field">
-                <textarea class="textarea" rows="5" id="content"></textarea>
-              </div>
-              <div class="field">
-                <button class="button" type="submit">Submit</button>
-              </div>
-            </form>
-          </div>
-        </article>
-      </div>
     </div>
     <div class="container is-fluid" id="index">
       <div class="tile is-ancestor">
@@ -60,5 +41,6 @@
     <script type="text/javascript" src="index.js"></script>
     <script type="text/javascript" src="sketchpad.js"></script>
     <script type="text/javascript" src="sketch.js"></script>
+    <script type="text/javascript" src="comment.js"></script>
   </body>
 </html>
