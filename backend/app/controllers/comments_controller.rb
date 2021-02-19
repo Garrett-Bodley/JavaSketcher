@@ -10,7 +10,7 @@ class CommentsController < ApplicationController
   private
 
   def comment_params
-    params.require(:comment).include(:name, :content)
+    params.require(:comment).permit(:name, :content, :sketch_id)
   end
 
 end

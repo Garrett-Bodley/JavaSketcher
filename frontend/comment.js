@@ -39,22 +39,26 @@ class Comment {
     if(!this._form){
       let mediaObj = Comment.mediaObj()
       let form = mediaObj.querySelector('form');
-      form.addEventListener('submit', this.submitComment)
+      form.addEventListener('submit', this.postComment)
       this._form = mediaObj
     }
     return this._form
   }
 
   postComment = (e) => {
-    e.preventdefault
+    debugger
+    e.preventDefault()
     let name = document.getElementById('name').value;
     let content = document.getElementById('content').value;
 
-    const submitUrl = 'http://localhost:3000/toys'
+    const submitUrl = 'http://localhost:3000/comments'
 
     let formData = {
-      name: name,
-      content: content,
+      comment: {
+        name: name,
+        content: content,
+        sketch_id: this.sketchId
+      }
     };
   
     let configObj = {
@@ -66,6 +70,8 @@ class Comment {
   
       body: JSON.stringify(formData)
     };
-    debugger
+    
+    fetch(submitUrl, configObj).then(resp => resp.json()).then(json => console.log(json))
+
   }
 }
