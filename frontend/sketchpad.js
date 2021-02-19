@@ -236,8 +236,6 @@ class Sketchpad {
     document.querySelector('input.brush-size-display').value = e.target.value
   }
 
-  // check out position absolute, position fixed
-
   createAndRenderCanvas = () => {
     let canvas = document.createElement('canvas');
     canvas.id = "canvas"
