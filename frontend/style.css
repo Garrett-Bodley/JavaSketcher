@@ -31,6 +31,10 @@ div.toolbar{
   vertical-align: middle;
 } */
 
+.navbar-item {
+  cursor: pointer;
+}
+
 .toolbar .color-field {
   height: 40 px;
   width: 40 px;
