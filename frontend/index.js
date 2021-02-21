@@ -1,10 +1,11 @@
 document.addEventListener('DOMContentLoaded', () =>{
   console.log('hello!');
-  Sketch.hide()
-  let sketchpad = new Sketchpad(document.getElementById('sketchpad'));
+  const sketchpad = new Sketchpad(document.getElementById('sketchpad'));
   document.getElementById('draw').addEventListener('click', () => {
     Sketch.hideIndex();
-    Sketch.hide()
+    if(!Sketch.hidden){
+      Sketch.hide()
+    }
     sketchpad.show()
   })
 

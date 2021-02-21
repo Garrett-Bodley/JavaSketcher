@@ -3,7 +3,8 @@ class Sketch {
   static showDiv = document.getElementById('show')
   static index = document.getElementById('index')
   static hidden = false;
-  static loaded = false;
+  static indexLoaded = false;
+  static submitURL = 'http://localhost:3000/sketches'
 
   constructor(obj){
     this.id = obj.id;
@@ -14,17 +15,23 @@ class Sketch {
   }
 
   static loadIndex = () => {
-    if (Sketch.loaded) {
+    if (Sketch.indexLoaded) {
       Sketch.showIndex();
-      Sketch.hide();
+      if(!Sketch.hidden){
+        Sketch.hide();
+      }
     }else{
-      fetch('http:localhost:3000/sketches').then(resp => resp.json()).then(json => Sketch.renderIndex(json));
-      Sketch.loaded = true;
+      fetch(this.submitURL).then(resp => resp.json()).then(json => Sketch.renderIndex(json));
+      Sketch.indexLoaded = true;
+      Sketch.showIndex();
+      if(!Sketch.hidden){
+        Sketch.hide();
+      }
     }
   }
 
   static renderIndex = (array) => {
-    let columns = document.querySelectorAll('div.tile.is-parent.is-vertical')
+    const columns = Sketch.index.querySelectorAll('div.tile.is-parent.is-vertical')
     let counter = 0
     for(const element of array){
       let sketch = new Sketch(element)
@@ -33,12 +40,20 @@ class Sketch {
     }
   }
 
+  static refreshIndex = () => {
+    const columns = document.querySelectorAll('div.tile.is-parent.is-vertical')
+    for(const column of columns){
+      column.innerHTML = '';
+    }
+    Sketch.indexLoaded = false;
+  }
+
   static hideIndex = () => {
     Sketch.index.remove()
   }
 
   static showIndex = () => {
-    document.body.appendChild(Sketch.index)
+    document.body.insertBefore(Sketch.index, document.getElementById('spacer'))
   }
 
   createCard = () => {
@@ -55,24 +70,32 @@ class Sketch {
   }
 
   static hide = () => {
+    document.querySelector('div#comments').innerHTML = ''
     Sketch.showDiv.remove()
     Sketch.hidden = true;
   }
 
   static show = () => {
     if(!Sketch.hidden) return
-    document.body.appendChild(Sketch.showDiv);
+    document.body.insertBefore(Sketch.showDiv, document.getElementById('spacer'));
     Sketch.hidden = false;
   }
 
   display = () => {
     Sketch.hideIndex()
     Sketch.show()
+    Sketchpad.all[0].hide()
     let img = Sketch.showDiv.querySelector('img');
     img.src = this.image;
     img.id = `sketch-${this.id}`;
     let comment = new Comment({sketchId: this.id})
-    Sketch.showDiv.appendChild(comment.form);
+    document.getElementById('comments').appendChild(comment.form);
+    this.fetchComments()
+  }
+
+
+  fetchComments = () => {
+    fetch(Sketch.submitURL + `/${this.id}`).then(resp => resp.json()).then(json => Comment.renderComments(json.comments))
   }
 
 

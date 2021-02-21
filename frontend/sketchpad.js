@@ -264,7 +264,11 @@ class Sketchpad {
       body: formData
     }
 
-    fetch('http://localhost:3000/sketches', configObj).then(resp => resp.json()).then(json => console.log(json))
+    fetch('http://localhost:3000/sketches', configObj).then(resp => resp.json()).then(json => {
+      let sketch = new Sketch(json);
+      sketch.display();
+      Sketch.refreshIndex();
+    })
   }
 
   dataURLtoBinary = (dataURL) => {
@@ -286,7 +290,7 @@ class Sketchpad {
 
   show = () => {
     if(!this.hidden) return
-    document.body.appendChild(this.parent);
+    document.body.insertBefore(this.parent, document.getElementById('spacer'));
     this.hidden = false;
     this.resize();
   }
