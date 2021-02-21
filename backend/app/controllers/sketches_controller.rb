@@ -18,6 +18,12 @@ class SketchesController < ApplicationController
     render json: sketch
   end
 
+  def update
+    sketch = Sketch.find(params[:id])
+    sketch.update(sketch_params.permit(:id, :rating, :image))
+    render json: sketch
+  end
+
   private
 
   def sketch_params
