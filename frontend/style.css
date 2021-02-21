@@ -76,3 +76,8 @@ div.toolbar{
   margin: 5px 5px
 }
 
+button#thumbs-up, button#thumbs-down {
+  margin: 2px, 2pxl;
+  border: 1px solid black
+}
+
