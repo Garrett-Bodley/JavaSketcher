@@ -22,7 +22,17 @@
     </nav>
     <nav class="toolbar level is-transparent"></nav>
     <div class="container is-fluid" id="show">
-      <div class="level"><img class="level-item" id="show-sketch-image"></div>
+      <article class="media box">
+        <div class="media-content">
+          <img class="level-item" id="show-sketch-image">
+        </div>
+        <div class="media-right">
+          <p id="rating" class="subtitle"></p>
+          <button class="button is-small is-primary m-1" id="thumbs-up">👍</button><br>
+          <button class="button is-small is-primary m-1" id="thumbs-down">👎</button>
+        </div>
+      </article> 
+      <div class="block"></div>
       <div class="container" id="comments"></div>
     </div>
     <div class="container is-fluid" id="index">
