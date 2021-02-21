@@ -1,10 +1,11 @@
 class Comment {
 
   static all = []
-  constructor({username: username, content: content, sketchId: sketchId}){
-    this.username = username;
+  constructor({name: name, content: content, sketchId: sketch_id, id: id}){
+    this.id = id;
+    this.name = name;
     this.content = content;
-    this.sketchId = sketchId;
+    this.sketchId = sketch_id;
 
     Comment.all.push(this);
   }
@@ -46,7 +47,6 @@ class Comment {
   }
 
   postComment = (e) => {
-    debugger
     e.preventDefault()
     let name = document.getElementById('name').value;
     let content = document.getElementById('content').value;
@@ -71,7 +71,55 @@ class Comment {
       body: JSON.stringify(formData)
     };
     
-    fetch(submitUrl, configObj).then(resp => resp.json()).then(json => console.log(json))
+    fetch(submitUrl, configObj).then(resp => resp.json()).then(json => {
+      let comment = new Comment(json);
+      comment.appendToDOM();
+      document.querySelector('form').reset()
+    })
 
   }
+
+  appendToDOM = () => {
+    let node = this.createCommentNode()
+    node.querySelector('p.subtitle').innerText = this.name;
+    node.querySelector('p.text').innerText = this.content;
+    node.id = `comment-${this.id}`;
+    document.getElementById('comments').appendChild(node);
+  }
+
+  createCommentNode = () => {
+    let node = document.createElement('div')
+    node.classList.add('container', 'box', 'comment-list')
+    node.innerHTML = 
+      `<article class="media">
+        <div class="media-content">
+          <div class="block">
+            <p class="subtitle">name</p>
+          </div>
+          <div class="block">
+            <div class="content">
+              <p class="text">content</p>
+            </div>
+          </div>
+        </div>
+      </article>`;
+    return node;
+  }
+
+  static instantiateComments = (array) => {
+    let commentCollection = []
+    for(const comment of array){
+      let newComment = new Comment(comment);
+      commentCollection.push(newComment)
+    }
+    return commentCollection
+  }
+
+  static renderComments = (array) => {
+    const comments = Comment.instantiateComments(array);
+    for(const comment of comments){
+      comment.appendToDOM()
+    }
+  }
+
 }
