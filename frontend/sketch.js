@@ -85,12 +85,65 @@ class Sketch {
     Sketch.hideIndex()
     Sketch.show()
     Sketchpad.all[0].hide()
+
+    this.resetShowArticle();
+
     let img = Sketch.showDiv.querySelector('img');
     img.src = this.image;
     img.id = `sketch-${this.id}`;
+
+    const rating = Sketch.showDiv.querySelector('p#rating')
+    rating.innerText = this.rating;
+
     let comment = new Comment({sketchId: this.id})
     document.getElementById('comments').appendChild(comment.form);
     this.fetchComments()
+  }
+
+  resetShowArticle = () => {
+    const article = Sketch.showDiv.querySelector('article')
+    const newArticle = article.cloneNode(true);
+    article.parentElement.replaceChild(newArticle, article);
+
+    const upvote = newArticle.querySelector('button#thumbs-up');
+    const downvote = newArticle.querySelector('button#thumbs-down');
+
+    upvote.addEventListener('click', () => {
+      this.rating++;
+      this.update();
+    });
+
+    downvote.addEventListener('click', () => {
+      this.rating--;
+      this.update();
+    });
+
+    const rating = Sketch.showDiv.querySelector('p#rating')
+    rating.innerText = this.rating;
+
+  }
+
+  update = () => {
+
+    let formData = {
+      id: this.id,
+      image: this.image,
+      rating: this.rating
+    }
+
+    let configObj = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(formData)
+    }
+
+    fetch(Sketch.submitURL + `/${this.id}`, configObj).then(resp => resp.json()).then(json => {
+      let newSketch = new Sketch(json);
+      newSketch.resetShowArticle();
+    })
   }
 
 
