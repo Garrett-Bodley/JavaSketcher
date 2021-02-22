@@ -267,7 +267,7 @@ class Sketchpad {
     fetch('http://localhost:3000/sketches', configObj).then(resp => resp.json()).then(json => {
       let sketch = new Sketch(json);
       sketch.display();
-      Sketch.refreshIndex();
+      Sketch.clearIndex();
     })
   }
 
