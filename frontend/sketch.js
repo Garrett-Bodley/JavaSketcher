@@ -40,8 +40,8 @@ class Sketch {
     }
   }
 
-  static refreshIndex = () => {
-    const columns = document.querySelectorAll('div.tile.is-parent.is-vertical')
+  static clearIndex = () => {
+    const columns = Sketch.index.querySelectorAll('div.tile.is-parent.is-vertical')
     for(const column of columns){
       column.innerHTML = '';
     }
