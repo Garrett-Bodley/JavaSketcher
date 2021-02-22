@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () =>{
 
   document.getElementById('all-sketches').addEventListener('click', () => {
     sketchpad.hide();
+    Sketch.clearIndex();
     Sketch.loadIndex();
   })
 })
