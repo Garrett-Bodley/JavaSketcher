@@ -108,9 +108,11 @@ class Comment {
 
   static instantiateComments = (array) => {
     let commentCollection = []
-    for(const comment of array){
-      let newComment = new Comment(comment);
-      commentCollection.push(newComment)
+    if(array.length > 0){
+      for(const comment of array){
+        let newComment = new Comment(comment);
+        commentCollection.push(newComment)
+      }
     }
     return commentCollection
   }
