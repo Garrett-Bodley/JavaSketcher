@@ -46,12 +46,12 @@ class Sketchpad {
   
   startDrawing = (e) => {
     this.drawing = true;
+    this.ctx.beginPath();
     this.draw(e);
   }
   
   stopDrawing = () => {
     this.drawing = false;
-    this.ctx.beginPath();
     this.saveState()
   }
   
@@ -60,6 +60,7 @@ class Sketchpad {
     this.ctx.lineWidth = this.lineWidth;
     this.ctx.lineCap = 'round';
     this.ctx.strokeStyle = this.drawColor
+
     this.ctx.lineTo(e.offsetX, e.offsetY);
     this.ctx.stroke();
     this.ctx.beginPath();
@@ -73,19 +74,18 @@ class Sketchpad {
   }
 
   saveState = () => {
-    this.stateLog.push(this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height))
+    const imageData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height)
+    this.stateLog.push(imageData)
   }
 
   undoLast = () => {
-    if(this.stateLog.length > 1){
       this.stateLog.pop();
-      this.clearCanvas()
-      const imageData = this.stateLog[this.stateLog.length - 1]
-      this.ctx.putImageData(imageData, (this.width - imageData.width)/2, (this.height - imageData.height)/2)
-    }else{
-      this.stateLog.pop();
-      this.clearCanvas()
-    }
+      this.clearCanvas();
+
+      if(this.stateLog.length > 1){
+        const imageData = this.stateLog[this.stateLog.length - 1]
+        this.ctx.putImageData(imageData, (this.width - imageData.width)/2, (this.height - imageData.height)/2)
+      }
   }
 
   setSize = () => {
