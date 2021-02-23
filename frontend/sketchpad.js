@@ -5,7 +5,7 @@ class Sketchpad {
     this.drawing = false;
     this.hidden = false;
     this.parent = element;
-    this.canvas = this.createAndRenderCanvas()
+    this.canvas = this.createCanvas()
     this.ctx = this.canvas.getContext("2d");
     this.backgroundColor = 'rgb(235, 213, 179)'
     this.lineWidth = 10;
@@ -70,7 +70,6 @@ class Sketchpad {
     this.ctx.fillStyle = this.backgroundColor;
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
-    this.saveState()
   }
 
   saveState = () => {
@@ -80,7 +79,9 @@ class Sketchpad {
   undoLast = () => {
     if(this.stateLog.length > 1){
       this.stateLog.pop();
-      this.ctx.putImageData(this.stateLog[this.stateLog.length - 1], 0, 0)
+      this.clearCanvas()
+      const imageData = this.stateLog[this.stateLog.length - 1]
+      this.ctx.putImageData(imageData, (this.width - imageData.width)/2, (this.height - imageData.height)/2)
     }else{
       this.stateLog.pop();
       this.clearCanvas()
@@ -113,7 +114,9 @@ class Sketchpad {
 
   addListeners(){
     this.canvas.addEventListener('mousedown', this.startDrawing)
-    this.canvas.addEventListener('mouseup', this.stopDrawing)
+    this.canvas.addEventListener('mouseup', () => {
+      if(this.drawing === true )this.stopDrawing()
+    })
     this.canvas.addEventListener('mouseleave', () => {
       if(this.drawing === true) this.stopDrawing()
     })
@@ -189,7 +192,10 @@ class Sketchpad {
     let clear = document.createElement('button');
     clear.innerText = `Clear`
     clear.classList.add('clear-button', 'button', 'is-rounded', 'is-light', 'tools')
-    clear.addEventListener('click', this.clearCanvas)
+    clear.addEventListener('click', () => {
+      this.clearCanvas();
+      this.saveState();
+    })
     buttons.push(clear)
 
     let save = document.createElement('button');
@@ -231,7 +237,7 @@ class Sketchpad {
     document.querySelector('input.brush-size-display').value = e.target.value
   }
 
-  createAndRenderCanvas = () => {
+  createCanvas = () => {
     let canvas = document.createElement('canvas');
     canvas.id = "canvas"
     this.parent.appendChild(canvas);
