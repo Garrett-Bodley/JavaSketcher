@@ -99,15 +99,10 @@ class Sketchpad {
 
   resize = () => {
     if(this.hidden) return
-    let toolbar = document.querySelector('div.toolbar')
-    let navbar = document.querySelector('nav.navbar')
-
-    this.width  = window.innerWidth * .9;
-    this.height = window.innerHeight * .9 - (toolbar.offsetHeight + navbar.offsetHeight)
-    this.ctx.fillStyle = this.backgroundColor;
-    this.ctx.fillRect(0, 0, this.width, this.height);
+    this.setSize()
     if(this.stateLog.length > 0){
-      this.ctx.putImageData(this.stateLog[this.stateLog.length - 1], 0, 0)
+      const imageData = this.stateLog[this.stateLog.length - 1]
+      this.ctx.putImageData(imageData, (this.width - imageData.width)/2, (this.height - imageData.height)/2)
     }
   }
 
