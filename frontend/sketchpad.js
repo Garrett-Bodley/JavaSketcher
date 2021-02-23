@@ -51,8 +51,10 @@ class Sketchpad {
   }
   
   stopDrawing = () => {
-    this.drawing = false;
-    this.saveState()
+    if (this.drawing === true){
+      this.drawing = false;
+      this.saveState()
+    }
   }
   
   draw = (e) => {
@@ -82,7 +84,7 @@ class Sketchpad {
       this.stateLog.pop();
       this.clearCanvas();
 
-      if(this.stateLog.length > 1){
+      if(this.stateLog.length > 0){
         const imageData = this.stateLog[this.stateLog.length - 1]
         this.ctx.putImageData(imageData, (this.width - imageData.width)/2, (this.height - imageData.height)/2)
       }
@@ -114,12 +116,8 @@ class Sketchpad {
 
   addListeners(){
     this.canvas.addEventListener('mousedown', this.startDrawing)
-    this.canvas.addEventListener('mouseup', () => {
-      if(this.drawing === true )this.stopDrawing()
-    })
-    this.canvas.addEventListener('mouseleave', () => {
-      if(this.drawing === true) this.stopDrawing()
-    })
+    this.canvas.addEventListener('mouseup', this.stopDrawing)
+    this.canvas.addEventListener('mouseleave', this.stopDrawing)
     this.canvas.addEventListener('mousemove', this.draw)
   }
 
