@@ -13,23 +13,13 @@ div.toolbar{
   margin:auto
 }
 
-
-/* body {
-} */
-
 #show{
-  display:block;
+  display: block;
 }
 
 #sketchpad {
   justify-content: center;
 }
-
-/* .toolbar {
-  display: inline-block;
-  height: 50px;
-  vertical-align: middle;
-} */
 
 .navbar-item {
   cursor: pointer;
@@ -79,5 +69,18 @@ div.toolbar{
 button#thumbs-up, button#thumbs-down {
   margin: 2px, 2pxl;
   border: 1px solid black
+}
+
+article.show-sketch {
+  margin:auto;
+  width:fit-content;
+}
+
+img {
+  max-width: 100%;
+}
+
+div.box article.media {
+  flex-grow: 1;
 }
 
