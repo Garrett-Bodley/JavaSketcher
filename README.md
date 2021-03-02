@@ -8,7 +8,7 @@ JavaSketcher was built using
 - Bulma 0.9.2
 
 ## Setup
-Upon download navigate to the `/backend` directory and run `bundle install` to install the necessary gems. Run `rails db:migrate` to set up the database. From there the server can be hosted locally using `rails s` or can be uploaded to any server hosting service.
+Upon download navigate to the `/backend` directory and run `bundle install` to install the necessary gems. Run `rails db:migrate` to set up the database. From there the server can be hosted locally using `rails s`.
 
 To view the page locally first start the server using `rails s` while inside the `/backend` directory. Then navigate to the `/frontend` directory and enter `open index.html`.
 
