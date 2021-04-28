@@ -9,6 +9,7 @@ gem 'active_model_serializers'
 # For Cloudinary CDN and Carrierwave integration
 gem 'carrierwave'
 gem 'cloudinary'
+gem 'attachinary'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
