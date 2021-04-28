@@ -5,6 +5,7 @@
     <title>Java Sketcher</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <link rel="stylesheet" href="style.css" />
+
   </head>
   <body>
     <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
@@ -36,6 +37,9 @@
       <div class="container" id="comments"></div>
     </div>
     <div class="container is-fluid" id="index">
+      <div class="level">
+        <button id="order-by-rating" class="button">Order by Rating</button>
+      </div>
       <div class="tile is-ancestor">
         <div class="tile is-parent is-vertical" id="tile-column-1">
         </div>
@@ -49,10 +53,11 @@
     </div>
     <div class="block" id="spacer"></div>
     <footer class="footer"></footer>
-  
-    <script type="text/javascript" src="index.js"></script>
+
+
     <script type="text/javascript" src="sketchpad.js"></script>
     <script type="text/javascript" src="sketch.js"></script>
     <script type="text/javascript" src="comment.js"></script>
+    <script type="text/javascript" src="index.js"></script>
   </body>
 </html>

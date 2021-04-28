@@ -31,6 +31,7 @@ class Sketch {
   }
 
   static renderIndex = (array) => {
+    Sketch.all = []
     const columns = Sketch.index.querySelectorAll('div.tile.is-parent.is-vertical')
     let counter = 0
     for(const element of array){
@@ -52,8 +53,25 @@ class Sketch {
     Sketch.index.remove()
   }
 
+  static orderByRating = () => {
+    console.log('function being called')
+    let orderButton = document.getElementById('order-by-rating')
+
+    orderButton.addEventListener('click', this.orderIndex)
+  }
+
+  static orderIndex = () => {
+    this.clearIndex();
+
+    let sorted = Sketch.all.sort((a, b) => {
+      return b.rating - a.rating
+    })
+    this.renderIndex(sorted)
+  }
+
   static showIndex = () => {
     document.body.insertBefore(Sketch.index, document.getElementById('spacer'))
+    this.orderByRating();
   }
 
   createCard = () => {
@@ -148,6 +166,7 @@ class Sketch {
 
 
   fetchComments = () => {
+    // refactor submit url is sketches/:id/comments (nested route)
     fetch(Sketch.submitURL + `/${this.id}`).then(resp => resp.json()).then(json => Comment.renderComments(json.comments))
   }
 
