@@ -1,4 +1,4 @@
 class Sketch < ApplicationRecord
   has_many :comments
-  has_attachment :image
+  has_one_attached :image
 end
