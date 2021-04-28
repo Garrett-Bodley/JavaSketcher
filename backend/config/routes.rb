@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-
+  mount Attachinary::Engine => "/attachinary"
+  
   root 'sketches#index'
   resources :comments
   resources :sketches
