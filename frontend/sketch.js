@@ -71,7 +71,7 @@ class Sketch {
 
   static showIndex = () => {
     document.body.insertBefore(Sketch.index, document.getElementById('spacer'))
-    this.orderByRating();
+    // this.orderByRating();
   }
 
   createCard = () => {
