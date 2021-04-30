@@ -1,4 +1,4 @@
-const SUBMIT_URL = 'https://javasketchr.herokuapp.com/'
+const SUBMIT_URL = 'https://javasketchr.herokuapp.com/sketches'
 
 class Sketchpad {
   static all = []
