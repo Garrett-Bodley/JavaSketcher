@@ -4,7 +4,7 @@ class Sketch {
   static index = document.getElementById('index')
   static hidden = false;
   static indexLoaded = false;
-  static submitURL = 'http://localhost:3000/sketches'
+  static submitURL = 'https://javasketchr.herokuapp.com/sketches'
 
   constructor(obj){
     this.id = obj.id;

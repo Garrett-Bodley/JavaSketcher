@@ -51,7 +51,7 @@ class Comment {
     let name = document.getElementById('name').value;
     let content = document.getElementById('content').value;
 
-    const submitUrl = 'http://localhost:3000/comments'
+    const submitUrl = 'https://javasketchr.herokuapp.com/comments'
 
     let formData = {
       comment: {

@@ -1,3 +1,5 @@
+const SUBMIT_URL = 'https://javasketchr.herokuapp.com/'
+
 class Sketchpad {
   static all = []
 
@@ -263,7 +265,7 @@ class Sketchpad {
       body: formData
     }
 
-    fetch('http://localhost:3000/sketches', configObj).then(resp => resp.json()).then(json => {
+    fetch(SUBMIT_URL, configObj).then(resp => resp.json()).then(json => {
       let sketch = new Sketch(json);
       sketch.display();
       Sketch.clearIndex();
