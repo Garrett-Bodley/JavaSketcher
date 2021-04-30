@@ -5,7 +5,7 @@ class SketchSerializer < ActiveModel::Serializer
   has_many :comments
 
   def image
-    polymorphic_url(object.image) if object.image.attached?
+    object.image.url if object.image.attached?
   end
 
 end
